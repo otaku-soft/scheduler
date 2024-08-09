@@ -23,9 +23,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(Request $request): void
     {
-        if (str_contains($request->url(), "/admin/"))
-            Paginator::useTailwind();
-        else
             Paginator::useBootstrapFive();
     }
 }

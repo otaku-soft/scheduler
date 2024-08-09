@@ -1,75 +1,76 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            Roles
-        </h2>
-    </x-slot>
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900 dark:text-gray-100">
-                    <h2 class="pb-3">Role List</h2>
-                    <ul id="sectionList" class="pb-3">
-                        @foreach ($roles as $role)
-                            <li class="p-4 border">
-                                {{ $role->name }}
-                                @if ($role->name !== "admin")
-                                    <x-primary-button style="float:right;margin-right:5px"
-                                                      onclick="editRoleModal({{ $role->id }})">
-                                        Edit
-                                    </x-primary-button>
-                                @endif
-                            </li>
-                        @endforeach
-                    </ul>
-                    <x-primary-button x-data="" x-on:click.prevent="$dispatch('open-modal', 'add-role')">
-                        Add Role
-                    </x-primary-button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <x-modal name="add-role">
-        <div class="p-6">
-            <form id="addRoleForm">
-                <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">Add Role</h2>
-                <x-text-input
-                        id="name"
-                        name="name"
-                        type="text"
-                        class="mt-1 block w-full"
-                        placeholder="Name"
-                        required
-                />
-                <br/>
-                <x-primary-button>
-                    Add
-                </x-primary-button>
-            </form>
-        </div>
-    </x-modal>
-    <x-modal name="edit-role">
-        <div class="p-6" id="edit-role-contents">
-        </div>
-    </x-modal>
+    @section('title', 'Roles')
+
+    <ul id="sectionList" class="list-group">
+        @foreach ($roles as $role)
+            <li class="list-group-item">
+                {{ $role->name }}
+                @if ($role->name !== "admin")
+                    <a href="#" style="float:right;margin-right:5px"
+                       onclick="editRoleModal({{ $role->id }})">
+                        Edit
+                    </a>
+                @endif
+            </li>
+        @endforeach
+    </ul>
+    <br/><br/>
+    <button class="btn btn-primary" onclick="addRole()">
+        Add Role
+    </button>
 </x-app-layout>
 
 <script>
-    $("#addRoleForm").on("submit", function (event)
+    const addRole = function ()
     {
-        event.preventDefault();
-        $.post("{{ route('roles_addRole') }}", $(this).serializeArray()).done(function (data)
+        $.post("{{ route('roles_addRoleModal') }}").done(function (data)
         {
-            window.location = "";
+            bootbox.confirm({
+                title: 'Add Role',
+                message: data,
+                size: 'large',
+                buttons: {
+                    cancel:
+                    {
+                        label: '<i class="fa fa-times"></i> Cancel'
+                    },
+                    confirm:
+                    {
+                        label: '<i class="fa fa-check"></i> Save'
+                    }
+                },
+                callback: function (result)
+                {
+                    if (result)
+                        $("#addRoleForm").submit();
+                }
+            });
         });
-    });
-
-    function editRoleModal(id)
+    }
+    const editRoleModal = function(id)
     {
-        $.post("{{ route('roles_editRoleModal') }}", {id: id}).done(function (data)
+        $.post("{{ route('roles_editRoleModal') }}",{id:id}).done(function (data)
         {
-            $("#edit-role-contents").html(data);
-            window.dispatchEvent(new CustomEvent('open-modal', {detail: 'edit-role', 'bubbles': true}));
+            bootbox.confirm({
+                title: 'Edit Role',
+                message: data,
+                size: 'large',
+                buttons: {
+                    cancel:
+                    {
+                        label: '<i class="fa fa-times"></i> Cancel'
+                    },
+                    confirm:
+                    {
+                        label: '<i class="fa fa-check"></i> Save'
+                    }
+                },
+                callback: function (result)
+                {
+                    if (result)
+                        $("#editRoleForm").submit();
+                }
+            });
         });
     }
 </script>

@@ -18,7 +18,14 @@ class RolesController extends Controller
         $roles = Role::all();
         return view('admin.roles.index', ["roles" => $roles]);
     }
-
+    /**
+     * @param Request $request
+     * @return View
+     */
+    public function addRoleModal(Request $request) : View
+    {
+        return view('admin.roles.add-role-modal');
+    }
     /**
      * @param Request $request
      * @return JsonResponse

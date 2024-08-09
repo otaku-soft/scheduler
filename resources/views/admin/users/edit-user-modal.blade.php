@@ -1,40 +1,34 @@
-<div class="text-lg font-medium text-gray-900 dark:text-gray-100">
+<div>
     <form id="editUserForm">
-        <div style="font-size:smaller">
             <input type="hidden" name="id" value="{{ $user->id }}"/>
-            Username:
             <x-text-input
                     id="name"
                     name="name"
                     type="text"
-                    class="mt-1 block w-full"
+                    class="form-control"
                     placeholder="Username"
                     value="{{ $user->name }}"
                     required
             />
-            Email:
-            <x-text-input
+            <br/>
+            <input
                     id="name"
                     name="email"
                     type="text"
-                    class="mt-1 block w-full"
+                    class="form-control"
                     placeholder="Email"
                     value="{{ $user->email }}"
                     required
             />
             Role:
-            <select name="role" style="width:100%;color:black">
+            <select name="role" class="form-control">
                 <option value=""></option>
                 @foreach ($roles as $role)
                     <option value="{{ $role->name }}"
                             @if ($user->hasRole($role->name)) selected @endif>{{ $role->name }}</option>
                 @endforeach
             </select>
-            <br/><br/>
-            <x-primary-button>
-                Save
-            </x-primary-button>
-        </div>
+            <input type="submit" hidden />
     </form>
 </div>
 <script>

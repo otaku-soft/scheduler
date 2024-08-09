@@ -11,6 +11,7 @@ Route::middleware(AuthAdmin::class)->group(function ()
     $urlRoles = new UrlBuilder("/admin/roles/");
     Route::get($urlRoles->url(""), [RolesController::class, 'index'])->name("roles_index");
     Route::post($urlRoles->url("/addRole"), [RolesController::class, 'addRole'])->name("roles_addRole");
+    Route::post($urlRoles->url("/addRoleModal"), [RolesController::class, 'addRoleModal'])->name("roles_addRoleModal");
     Route::post($urlRoles->url("/editRoleModal"), [RolesController::class, 'editRoleModal'])->name("roles_editRoleModal");
     Route::post($urlRoles->url("/editRole"), [RolesController::class, 'editRole'])->name("roles_editRole");
     $urlUsers = new UrlBuilder("/admin/users/");

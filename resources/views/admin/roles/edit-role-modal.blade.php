@@ -1,19 +1,15 @@
 <form id="editRoleForm">
-    <x-input-label for="name" value="Name" class="sr-only"/>
     <input type="hidden" name="id" value="{{ $role->id }}"/>
-    <x-text-input
+    <input
             id="name"
             name="name"
             type="text"
-            class="mt-1 block w-full"
+            class="form-control"
             placeholder="Name"
             value="{{ $role->name }}"
             required
     />
-    <br/>
-    <x-primary-button>
-        Save
-    </x-primary-button>
+    <input type="submit" hidden />
 </form>
 <script>
     $("#editRoleForm").on("submit", function (event)

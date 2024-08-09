@@ -11,12 +11,13 @@ use App\Http\Controllers\Controller;
 
 class UsersController extends Controller
 {
+    const MAX_USERS = 10;
     /**
      * @return View
      */
     public function index(): View
     {
-        $users = User::paginate(10);
+        $users = User::paginate(self::MAX_USERS);
         return view('admin.users.index', ["users" => $users]);
     }
 
