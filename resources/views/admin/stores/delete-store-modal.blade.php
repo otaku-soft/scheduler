@@ -1,0 +1,1 @@
+Are you sure you want to delete store: {{ $store->name }}

@@ -215,6 +215,12 @@
                             Roles
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link @if (request()->routeIs('stores_index')) active @endif" href="{{ route('stores_index') }}">
+                            <span data-feather="dollar-sign" class="align-text-bottom"></span>
+                            Stores
+                        </a>
+                    </li>
                     @endif
                 </ul>
             </div>
