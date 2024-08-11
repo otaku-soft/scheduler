@@ -221,6 +221,12 @@
                             Stores
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link @if (request()->routeIs('rooms_index')) active @endif" href="{{ route('rooms_index') }}">
+                            <span data-feather="folder" class="align-text-bottom"></span>
+                            Rooms
+                        </a>
+                    </li>
                     @endif
                 </ul>
             </div>

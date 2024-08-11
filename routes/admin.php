@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\RolesController;
 use App\Http\Controllers\Admin\UsersController;
 use App\Http\Controllers\Admin\StoresController;
+use App\Http\Controllers\Admin\RoomsController;
 use App\Http\Middleware\AuthAdmin;
 use App\Routes\UrlBuilder;
 
@@ -28,4 +29,13 @@ Route::middleware(AuthAdmin::class)->group(function ()
     Route::post($urlStores->url("deleteStoreModal"), [StoresController::class, 'deleteStoreModal'])->name("stores_deleteStoreModal");
     Route::post($urlStores->url("deleteStore"), [StoresController::class, 'deleteStore'])->name("stores_deleteStore");
     Route::post($urlStores->url("restoreStore"), [StoresController::class, 'restoreStore'])->name("stores_restoreStore");
+    $urlRooms = new UrlBuilder("/admin/rooms/");
+    Route::get($urlRooms->url(""), [RoomsController::class, 'index'])->name("rooms_index");
+    Route::post($urlRooms->url("addRoomModal"), [RoomsController::class, 'addRoomModal'])->name("rooms_addRoomModal");
+    Route::post($urlRooms->url("addRoom"), [RoomsController::class, 'addRoom'])->name("rooms_addRoom");
+    Route::post($urlRooms->url("editRoomModal"), [RoomsController::class, 'editRoomModal'])->name("rooms_editRoomModal");
+    Route::post($urlRooms->url("editRoom"), [RoomsController::class, 'editRoom'])->name("rooms_editRoom");
+    Route::post($urlRooms->url("deleteRoomModal"), [RoomsController::class, 'deleteRoomModal'])->name("rooms_deleteRoomModal");
+    Route::post($urlRooms->url("deleteRoom"), [RoomsController::class, 'deleteRoom'])->name("rooms_deleteRoom");
+    Route::post($urlRooms->url("restoreRoom"), [RoomsController::class, 'restoreRoom'])->name("rooms_restoreRoom");
 });
