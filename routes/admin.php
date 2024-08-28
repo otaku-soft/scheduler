@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\RolesController;
 use App\Http\Controllers\Admin\UsersController;
 use App\Http\Controllers\Admin\StoresController;
 use App\Http\Controllers\Admin\RoomsController;
+use App\Http\Controllers\Admin\WeeklyHoursController;
 use App\Http\Middleware\AuthAdmin;
 use App\Routes\UrlBuilder;
 
@@ -43,4 +44,6 @@ Route::middleware(AuthAdmin::class)->group(function ()
     Route::get($urlRooms->url("storeList/{id}"), [RoomsController::class, 'storeList'])->name("rooms_storeList");
     Route::post($urlRooms->url("storeListConfigureModal"), [RoomsController::class, 'storeListConfigureModal'])->name("rooms_storeListConfigureModal");
     Route::post($urlRooms->url("storeListConfigureSave"), [RoomsController::class, 'storeListConfigureSave'])->name("rooms_storeListConfigureSave");
+    $urlWeeklyHours = new UrlBuilder("/admin/weeklyHours/");
+    Route::get($urlWeeklyHours->url(""), [WeeklyHoursController::class, 'index'])->name("weeklyHours_index");
 });

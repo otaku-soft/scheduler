@@ -204,6 +204,12 @@
                     </li>
                     @if (Session::get("role")->name === "admin")
                     <li class="nav-item">
+                        <a class="nav-link @if (request()->routeIs('weeklyHours_index')) active @endif" href="{{ route('weeklyHours_index') }}">
+                            <span data-feather="clock" class="align-text-bottom"></span>
+                            Weekly Hours
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link @if (request()->routeIs('users_index')) active @endif" href="{{ route('users_index') }}">
                             <span data-feather="users" class="align-text-bottom"></span>
                             Users
