@@ -11,14 +11,13 @@ use App\Models\States;
 
 class StoresController extends Controller
 {
-    const MAX_STORES = 10;
 
     /**
      * @return View
      */
     public function index(): View
     {
-        $stores = Stores::paginate(self::MAX_STORES);
+        $stores = Stores::paginate(Stores::PAGINATE_DEFAULT);
         $deletedStores = Stores::onlyTrashed()->get();
         return view('admin.stores.index', ["stores" => $stores,'deletedStores' => $deletedStores]);
     }

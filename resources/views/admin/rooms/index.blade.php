@@ -25,8 +25,10 @@
                         {{ $room->slug }}
                     </td>
                     <td>
-                        <a href = "#" onclick="javascript:editRoomModal({{ $room->id }})">Edit</a> <a href = "#"
-                                onclick="deleteRoomModal({{ $room->id }})">Delete</a>
+                        <a href = "#" onclick="javascript:editRoomModal({{ $room->id }})">Edit</a>
+                        <a href = "#" onclick="javascript:updateRoomPricingModal({{ $room->id }})">Set Pricing</a>
+                        <a href = "{{ route('rooms_storeList',["id" => $room->id]) }}">Set Rooms</a>
+                        <a href = "#" onclick="deleteRoomModal({{ $room->id }})">Delete</a>
                     </td>
                 </tr>
             @endforeach
@@ -116,6 +118,35 @@
                 {
                     if (result)
                         $("#editRoomForm").submit();
+                    return !result;
+                }
+            });
+        });
+    }
+    const updateRoomPricingModal = function(id)
+    {
+        $.post("{{ route('rooms_updateRoomPricingModal') }}", {id: id}).done(function (data)
+        {
+            bootbox.confirm({
+                title: 'Set Pricing',
+                message: data,
+                size: 'large',
+                buttons: {
+                    cancel:
+                    {
+                        label: '<i class="fa fa-times"></i> Cancel'
+                    },
+                    confirm:
+                    {
+                        label: '<i class="fa fa-check"></i> Save'
+                    }
+                },
+                callback: function (result)
+                {
+                    if (result)
+                    {
+                        $("#pricingForm").submit();
+                    }
                     return !result;
                 }
             });

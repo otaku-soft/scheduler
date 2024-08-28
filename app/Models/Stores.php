@@ -11,6 +11,8 @@ class Stores extends Model
 {
     use HasFactory;
     use SoftDeletes;
+    const PAGINATE_DEFAULT = 10;
+
     static $rules =
     [
         'name' => 'required',

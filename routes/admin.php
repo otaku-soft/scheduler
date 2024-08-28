@@ -38,4 +38,9 @@ Route::middleware(AuthAdmin::class)->group(function ()
     Route::post($urlRooms->url("deleteRoomModal"), [RoomsController::class, 'deleteRoomModal'])->name("rooms_deleteRoomModal");
     Route::post($urlRooms->url("deleteRoom"), [RoomsController::class, 'deleteRoom'])->name("rooms_deleteRoom");
     Route::post($urlRooms->url("restoreRoom"), [RoomsController::class, 'restoreRoom'])->name("rooms_restoreRoom");
+    Route::post($urlRooms->url("updateRoomPricingModal"), [RoomsController::class, 'updateRoomPricingModal'])->name("rooms_updateRoomPricingModal");
+    Route::post($urlRooms->url("updateRoomPricing"), [RoomsController::class, 'updateRoomPricing'])->name("rooms_updateRoomPricing");
+    Route::get($urlRooms->url("storeList/{id}"), [RoomsController::class, 'storeList'])->name("rooms_storeList");
+    Route::post($urlRooms->url("storeListConfigureModal"), [RoomsController::class, 'storeListConfigureModal'])->name("rooms_storeListConfigureModal");
+    Route::post($urlRooms->url("storeListConfigureSave"), [RoomsController::class, 'storeListConfigureSave'])->name("rooms_storeListConfigureSave");
 });
