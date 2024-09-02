@@ -1,53 +1,147 @@
 <x-app-layout>
-    <ul class="list-group">
+    <ul class="nav nav-tabs">
+
         @foreach ($days as $day)
-            <li class="list-group-item">
-                <h3>{{ $day }}</h3>
-                <ul class="list-group">
-                    @foreach ($hours as $hour)
-                        <li class="list-group-item">
-                            <input type="checkbox" name="hour" data-hour="{{ $hour }}" /> @include('admin.weekly-hours.hour',['hour' => $hour])
-                            - @include('admin.weekly-hours.hour',['hour' => $hour+1])
-                            @foreach ($minutes as $minute)
-                                @if ($minute % 10 === 0)
-                                    @php
-                                        $localMinute = $minute
-                                    @endphp
-                                    <ul class="list-group" style="padding-top:10px;padding-bottom:10px;margin-left:1%" data-hour="{{ $hour }}">
-                                        <li class="list-group-item">
-                                            <input type="checkbox"  name="minute" data-minute="{{ $minute }}"/> {{ $minute }} - {{ $minute +10  }}
-                                            <ul class="list-group" style="margin-left:1%;" data-minute="{{ $minute }}">
-                                                <li class="list-group-item">
-                                                    @for ($i = 0; $i < 10; $i++)
-                                                        <span style="padding-right:10px"><input type="checkbox" name="localMinute"/> {{ $localMinute  }} - {{ $localMinute + 1 }} </span>
-                                                        @php
-                                                            $localMinute++
-                                                        @endphp
-                                                    @endfor
-                                                </li>
-                                            </ul>
-                                        </li>
-                                    </ul>
-                                @endif
-                            @endforeach
-                        </li>
-                    @endforeach
-                </ul>
+            <li class="nav-item">
+                <a class="nav-link @if ($loop->first) active @endif" onclick="showSection('{{ $day }}')" href="#"
+                   data-day="{{ $day }}">{{ $day }}</a>
             </li>
         @endforeach
     </ul>
+    @foreach ($days as $day)
+        <div data-day="{{ $day }}" class="day">
+            <br/>
+            <div class="scheduleList" data-day="{{ $day }}">
+
+            </div>
+        </div>
+    @endforeach
+    <b>Add a time</b>
+    <div class="row">
+        <div class="col">
+            Start
+            <input type="text" class="timepicker form-control" id="startingTime"/>
+        </div>
+        <div class="col">
+            End
+            <input type="text" class="timepicker form-control" id="endingTime"/>
+        </div>
+    </div>
     <br/>
-    <button class="btn btn-primary">Save</button>
+    <button class="btn btn-primary"
+            onclick="addTime($('.day:visible').data('day'),$('#startingTime').val(),$('#endingTime').val())">Save
+    </button>
 </x-app-layout>
 
-
 <script>
-    $("[name=hour]").click(function(){
-        let hour = $(this).data("hour");
-        $(`ul[data-hour=${hour}]`).toggle(!$(this).is(":checked"));
+    $('.timepicker').timepicker({
+        timeFormat: 'h:mm p',
+        interval: 5,
+        dynamic: false,
+        dropdown: true,
+        scrollbar: true
     });
-    $("[name=minute]").click(function(){
-        let minute = $(this).data("minute");
-        $(`ul[data-minute=${minute}]`).toggle(!$(this).is(":checked"));
-    });
+    const getList = function (day)
+    {
+        $.post("{{ route('weeklyHours_timelist') }}", {day: day}).done(function (html)
+        {
+            $(`.scheduleList[data-day=${day}]`).html(html);
+        });
+    }
+    const showSection = function (day)
+    {
+        $('.day').hide();
+        $('.nav-link').removeClass('active');
+        $(`.nav-link[data-day=${day}]`).addClass('active');
+        $(`.day[data-day=${day}]`).show();
+        getList(day);
+    }
+    const addTime = function (day, startingTime, endingTime)
+    {
+        let time = new Object();
+        time.day = day;
+        time.startingTime = startingTime;
+        time.endingTime = endingTime;
+        $.post("{{ route('weeklyHours_addTime') }}", time).done(function (data)
+        {
+            getList(day);
+        });
+    }
+    const editTimeModal = function (id)
+    {
+        $.post("{{ route('weeklyHours_editTimeModal') }}", {id: id}).done(function (data)
+        {
+            bootbox.confirm({
+                title: 'Edit Time',
+                message: data,
+                size: 'small',
+                buttons: {
+                    cancel:
+                    {
+                        label: '<i class="fa fa-times"></i> Cancel'
+                    },
+                    confirm:
+                    {
+                        label: '<i class="fa fa-check"></i> Save'
+                    }
+                },
+                callback: function (result)
+                {
+                    if (result)
+                    {
+                        let time = new Object();
+                        time.startingTime = $("#startingTimeModal").val();
+                        time.endingTime = $("#endingTimeModal").val();
+                        time.id = id;
+                        $.post("{{ route('weeklyHours_editTime') }}", time).done(function (data)
+                        {
+                            if (data.success)
+                            {
+                                getList($('.day:visible').data('day'));
+                                bootbox.hideAll()
+                            }
+                        });
+                    }
+                    return !result;
+                }
+            });
+        });
+    }
+    const deleteTimeModal = function (id)
+    {
+        $.post("{{ route('weeklyHours_deleteTimeModal') }}", {id: id}).done(function (data)
+        {
+            bootbox.confirm({
+                title: 'Delete Time',
+                message: data,
+                size: 'small',
+                buttons: {
+                    cancel:
+                    {
+                        label: '<i class="fa fa-times"></i> Cancel'
+                    },
+                    confirm:
+                    {
+                        label: '<i class="fa fa-check"></i> Delete'
+                    }
+                },
+                callback: function (result)
+                {
+                    if (result)
+                    {
+                        $.post("{{ route('weeklyHours_deleteTime') }}", {id: id}).done(function (data)
+                        {
+                            if (data.success)
+                            {
+                                getList($('.day:visible').data('day'));
+                                bootbox.hideAll()
+                            }
+                        });
+                    }
+                    return !result;
+                }
+            });
+        });
+    }
+    showSection('{{ current($days) }}');
 </script>

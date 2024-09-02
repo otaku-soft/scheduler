@@ -46,4 +46,10 @@ Route::middleware(AuthAdmin::class)->group(function ()
     Route::post($urlRooms->url("storeListConfigureSave"), [RoomsController::class, 'storeListConfigureSave'])->name("rooms_storeListConfigureSave");
     $urlWeeklyHours = new UrlBuilder("/admin/weeklyHours/");
     Route::get($urlWeeklyHours->url(""), [WeeklyHoursController::class, 'index'])->name("weeklyHours_index");
+    Route::post($urlWeeklyHours->url("addTime"), [WeeklyHoursController::class, 'addTime'])->name("weeklyHours_addTime");
+    Route::post($urlWeeklyHours->url("timelist"), [WeeklyHoursController::class, 'timelist'])->name("weeklyHours_timelist");
+    Route::post($urlWeeklyHours->url("editTimeModal"), [WeeklyHoursController::class, 'editTimeModal'])->name("weeklyHours_editTimeModal");
+    Route::post($urlWeeklyHours->url("editTime"), [WeeklyHoursController::class, 'editTime'])->name("weeklyHours_editTime");
+    Route::post($urlWeeklyHours->url("deleteTimeModal"), [WeeklyHoursController::class, 'deleteTimeModal'])->name("weeklyHours_deleteTimeModal");
+    Route::post($urlWeeklyHours->url("deleteTime"), [WeeklyHoursController::class, 'deleteTime'])->name("weeklyHours_deleteTime");
 });

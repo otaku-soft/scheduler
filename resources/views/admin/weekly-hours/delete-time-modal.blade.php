@@ -1,0 +1,1 @@
+Delete {{ date("g:i A",strtotime($time->starting_time)) }}-{{ date("g:i A",strtotime($time->ending_time)) }} ?
