@@ -43,7 +43,7 @@
     });
     const getList = function (day)
     {
-        $.post("{{ route('weeklyHours_timelist') }}", {day: day}).done(function (html)
+        $.post("{{ route($routes['timelist']) }}", {day: day}).done(function (html)
         {
             $(`.scheduleList[data-day=${day}]`).html(html);
         });
@@ -62,14 +62,14 @@
         time.day = day;
         time.startingTime = startingTime;
         time.endingTime = endingTime;
-        $.post("{{ route('weeklyHours_addTime') }}", time).done(function (data)
+        $.post("{{ route($routes['addTime']) }}", time).done(function (data)
         {
             getList(day);
         });
     }
     const editTimeModal = function (id)
     {
-        $.post("{{ route('weeklyHours_editTimeModal') }}", {id: id}).done(function (data)
+        $.post("{{ route($routes['editTimeModal']) }}", {id: id}).done(function (data)
         {
             bootbox.confirm({
                 title: 'Edit Time',
@@ -93,7 +93,7 @@
                         time.startingTime = $("#startingTimeModal").val();
                         time.endingTime = $("#endingTimeModal").val();
                         time.id = id;
-                        $.post("{{ route('weeklyHours_editTime') }}", time).done(function (data)
+                        $.post("{{ route($routes['editTime']) }}", time).done(function (data)
                         {
                             if (data.success)
                             {
@@ -109,7 +109,7 @@
     }
     const deleteTimeModal = function (id)
     {
-        $.post("{{ route('weeklyHours_deleteTimeModal') }}", {id: id}).done(function (data)
+        $.post("{{ route($routes['deleteTimeModal']) }}", {id: id}).done(function (data)
         {
             bootbox.confirm({
                 title: 'Delete Time',
@@ -129,7 +129,7 @@
                 {
                     if (result)
                     {
-                        $.post("{{ route('weeklyHours_deleteTime') }}", {id: id}).done(function (data)
+                        $.post("{{ route($routes['deleteTime']) }}", {id: id}).done(function (data)
                         {
                             if (data.success)
                             {

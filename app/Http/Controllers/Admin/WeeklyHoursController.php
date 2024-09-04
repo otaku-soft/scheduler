@@ -84,7 +84,17 @@ class WeeklyHoursController extends Controller
      */
     public function index() : View
     {
-        return view('admin.weekly-hours.index', ["days" => $this->weeklyHoursService::DAYS, 'hours' => $this->weeklyHoursService->hours(), 'minutes' => $this->weeklyHoursService->minutes()]);
+        $routes =
+        [
+            "timelist" => "weeklyHours_timelist",
+            "addTime" => "weeklyHours_addTime",
+            "editTimeModal" => "weeklyHours_editTimeModal",
+            "editTime" => "weeklyHours_editTime",
+            "deleteTimeModal" => "weeklyHours_deleteTimeModal",
+            "deleteTime" => "weeklyHours_deleteTime"
+
+        ];
+        return view('admin.weekly-hours.index', ["days" => $this->weeklyHoursService::DAYS, 'hours' => $this->weeklyHoursService->hours(), 'minutes' => $this->weeklyHoursService->minutes(),"routes" => $routes]);
     }
 
     /**
