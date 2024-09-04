@@ -85,6 +85,7 @@ class WeeklyHoursService
         return $this->weeklyHoursSelected;
     }
 
+
     /**
      * @param int $storeId
      * @return void
@@ -155,8 +156,13 @@ class WeeklyHoursService
      */
     public function addTime(string $day, string $startingTime, string $endingTime) : bool
     {
-        if (!$this->validateTime(WeeklyHours::where("day", $day)->get(), $startingTime, $endingTime))
+        $findValidateParams = ["day" => $day];
+        if ($this->weeklyHoursSelected instanceof StoreWeeklyHours)
+            $findValidateParams['store_id'] = $this->storeId;
+
+        if (!$this->validateTime($this->weeklyHoursSelected->where($findValidateParams)->get(), $startingTime, $endingTime))
             return false;
+
         if ($this->weeklyHoursSelected instanceof StoreWeeklyHours)
         {
             $weeklyHours = new StoreWeeklyHours();
@@ -183,7 +189,7 @@ class WeeklyHoursService
         $weeklyHours = $this->instance()->find($id);
         if (!$this->validateTime($this->instance()->where("id", "!=", $weeklyHours->id)->where("day", $weeklyHours->day)->get(), $startingTime, $endingTime))
             return false;
-        $weeklyHours = WeeklyHours::find($id);
+        $weeklyHours = $this->instance()->find($id);
         $weeklyHours->starting_time = new \DateTime($startingTime);
         $weeklyHours->ending_time = new \DateTime($endingTime);
         $weeklyHours->save();
@@ -196,7 +202,7 @@ class WeeklyHoursService
      */
     public function deleteTime(int $id) : bool
     {
-        $time = WeeklyHours::find($id);
+        $time = $this->instance()->find($id);
         $time->delete();
         return true;
     }

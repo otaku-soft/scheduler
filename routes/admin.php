@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\UsersController;
 use App\Http\Controllers\Admin\StoresController;
 use App\Http\Controllers\Admin\RoomsController;
 use App\Http\Controllers\Admin\WeeklyHoursController;
+use App\Http\Controllers\Admin\StoreWeeklyHoursController;
 use App\Http\Middleware\AuthAdmin;
 use App\Routes\UrlBuilder;
 
@@ -52,4 +53,12 @@ Route::middleware(AuthAdmin::class)->group(function ()
     Route::post($urlWeeklyHours->url("editTime"), [WeeklyHoursController::class, 'editTime'])->name("weeklyHours_editTime");
     Route::post($urlWeeklyHours->url("deleteTimeModal"), [WeeklyHoursController::class, 'deleteTimeModal'])->name("weeklyHours_deleteTimeModal");
     Route::post($urlWeeklyHours->url("deleteTime"), [WeeklyHoursController::class, 'deleteTime'])->name("weeklyHours_deleteTime");
+    $urlStoreWeeklyHours = new UrlBuilder("/admin/storeWeeklyHours/");
+    Route::get($urlStoreWeeklyHours->url("{storeId}"), [StoreWeeklyHoursController::class, 'index'])->name("storeWeeklyHours_index");
+    Route::post($urlStoreWeeklyHours->url("addTime"), [StoreWeeklyHoursController::class, 'addTime'])->name("storeWeeklyHours_addTime");
+    Route::post($urlStoreWeeklyHours->url("timelist"), [StoreWeeklyHoursController::class, 'timelist'])->name("storeWeeklyHours_timelist");
+    Route::post($urlStoreWeeklyHours->url("editTimeModal"), [StoreWeeklyHoursController::class, 'editTimeModal'])->name("storeWeeklyHours_editTimeModal");
+    Route::post($urlStoreWeeklyHours->url("editTime"), [StoreWeeklyHoursController::class, 'editTime'])->name("storeWeeklyHours_editTime");
+    Route::post($urlStoreWeeklyHours->url("deleteTimeModal"), [StoreWeeklyHoursController::class, 'deleteTimeModal'])->name("storeWeeklyHours_deleteTimeModal");
+    Route::post($urlStoreWeeklyHours->url("deleteTime"), [StoreWeeklyHoursController::class, 'deleteTime'])->name("storeWeeklyHours_deleteTime");
 });

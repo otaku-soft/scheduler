@@ -43,7 +43,11 @@
     });
     const getList = function (day)
     {
-        $.post("{{ route($routes['timelist']) }}", {day: day}).done(function (html)
+        let params = {day: day};
+        @isset($storeId)
+                params.storeId =  {{ $storeId }}
+        @endif
+        $.post("{{ route($routes['timelist']) }}", params).done(function (html)
         {
             $(`.scheduleList[data-day=${day}]`).html(html);
         });
@@ -62,6 +66,9 @@
         time.day = day;
         time.startingTime = startingTime;
         time.endingTime = endingTime;
+        @isset($storeId)
+            time.storeId =  {{ $storeId }}
+        @endif
         $.post("{{ route($routes['addTime']) }}", time).done(function (data)
         {
             getList(day);
@@ -69,7 +76,11 @@
     }
     const editTimeModal = function (id)
     {
-        $.post("{{ route($routes['editTimeModal']) }}", {id: id}).done(function (data)
+        let params = {id: id};
+        @isset($storeId)
+            params.storeId =  {{ $storeId }}
+        @endif
+        $.post("{{ route($routes['editTimeModal']) }}", params).done(function (data)
         {
             bootbox.confirm({
                 title: 'Edit Time',
@@ -93,6 +104,9 @@
                         time.startingTime = $("#startingTimeModal").val();
                         time.endingTime = $("#endingTimeModal").val();
                         time.id = id;
+                        @isset($storeId)
+                            time.storeId =  {{ $storeId }}
+                        @endif
                         $.post("{{ route($routes['editTime']) }}", time).done(function (data)
                         {
                             if (data.success)
@@ -109,7 +123,11 @@
     }
     const deleteTimeModal = function (id)
     {
-        $.post("{{ route($routes['deleteTimeModal']) }}", {id: id}).done(function (data)
+        let params = {id: id};
+        @isset($storeId)
+            params.storeId =  {{ $storeId }}
+        @endif
+        $.post("{{ route($routes['deleteTimeModal']) }}", params).done(function (data)
         {
             bootbox.confirm({
                 title: 'Delete Time',
@@ -129,7 +147,7 @@
                 {
                     if (result)
                     {
-                        $.post("{{ route($routes['deleteTime']) }}", {id: id}).done(function (data)
+                        $.post("{{ route($routes['deleteTime']) }}", params).done(function (data)
                         {
                             if (data.success)
                             {
