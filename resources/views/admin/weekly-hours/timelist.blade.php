@@ -18,4 +18,7 @@
 
     </tbody>
 </table>
+@elseif (isset($storeId))
+    Currently using default weekly hours
+    <br/><br/>
 @endif

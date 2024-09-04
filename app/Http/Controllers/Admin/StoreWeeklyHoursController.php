@@ -35,7 +35,7 @@ class StoreWeeklyHoursController extends Controller
     {
         $this->weeklyHoursService->setStoreId($request->get("storeId"));
         $times = $this->weeklyHoursService->timelist($request->get("day"));
-        return view('admin.weekly-hours.timelist', ["times" => $times]);
+        return view('admin.weekly-hours.timelist', ["times" => $times,"storeId" => $request->get("storeId")]);
 
     }
 
