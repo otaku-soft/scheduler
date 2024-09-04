@@ -38,7 +38,7 @@
                         {{ $store->slug }}
                     </td>
                     <td>
-                        <a href="#" onclick="editScoreModal({{ $store->id }})">Edit</a> <a href="#"
+                        <a href="#" onclick="editScoreModal({{ $store->id }})">Edit</a> <a href="#">Set Weekly Hours</a> <a href="#"
                                                                                            onclick="deleteStoreModal({{ $store->id }})">Delete</a>
                     </td>
                 </tr>
