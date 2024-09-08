@@ -13,6 +13,7 @@
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.0/themes/base/jquery-ui.css">
     <meta name="theme-color" content="#712cf9">
 
 
@@ -214,6 +215,12 @@
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link @if (request()->routeIs('events_index')) active @endif" href="{{ route('events_index') }}">
+                            <span data-feather="clock" class="align-text-bottom"></span>
+                            Events
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link @if (request()->routeIs('users_index')) active @endif" href="{{ route('users_index') }}">
                             <span data-feather="users" class="align-text-bottom"></span>
                             Users
@@ -275,5 +282,6 @@
 </script>
 <script src = "{{ url("js/bootbox.min.js") }}"></script>
 <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 </body>
 </html>
