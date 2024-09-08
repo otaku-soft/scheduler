@@ -25,54 +25,34 @@
             showWeek: false,
             viewMode: "months",
             maxViewMode: "months",
-            firstDay: 0,
-            monthNames: ["1","2","3","4","5","6","7","8","9","10","11","12"],
-            monthNamesShort: ["1","2","3","4","5","6","7","8","9","10","11","12"]
-            /*
-            onChangeMonthYear: function (year, month, inst) {
-               // $("#datepicker").datepicker("setDate" , "04/02/2020" );
-                //$('#datepicker').datepicker("option", "defaultDate",'03/01/2020');
-
-                //alert(month);
-                //$("#datepicker").datepicker( "option", "firstDay", $(".ui-datepicker-calendar tbody tr:first .ui-state-disabled" ).length  );
-                //setTimeout();
-                //$("#datepicker").datepicker(Date(month +  '/01/2020'));
-                //$('#datepicker').datepicker("option", "defaultDate",'03/01/2020');
-                //$("#datepicker").datepicker('setDate', '10/03/2020');
-
-                //inst.datepicker("option",'defaultDate', month +  '/01/2020');
-            }
-             */
-
+            firstDay: 0
         }
         );
-        //$("#datepicker").datepicker( "setDate" , "02/02/2020" ).datepicker("fill");
-        /*
-        var inst = $.datepicker._getInst($('#datepicker').get(0));
-        inst.settings.onChangeMonthYear = function (year, month, inst){
-            alert(month);
-            $("#datepicker").datepicker( "option", "firstDay", $(".ui-datepicker-calendar tbody tr:first .ui-state-disabled" ).length  );
-             $("#datepicker").datepicker("setDate" , new Date(2020,month,1) );
-
-            // your code here
-        }
-         */
         let oldLength = 0;
-
-        $(document).on('click', '.ui-datepicker-next', function () {
-            let month  = $(".ui-datepicker-month").text();
+        let formatCalender = function ()
+        {
+            var months = [
+                "January", "February", "March", "April", "May", "June", "July",
+                "August", "September", "October", "November", "December"];
+            let month = months.indexOf($(".ui-datepicker-month").text()) + 1;
             month--;
-                setTimeout(() =>
-                {
-                    let length = $(".ui-datepicker-calendar tbody tr:first .ui-state-disabled").length;
-                    length = (length + oldLength) % 7;
-                    oldLength = length;
-                    $("#datepicker").datepicker("option", "firstDay", length);
-                    $("#datepicker").datepicker("setDate", new Date(2020, month, 1));
-                },1000);
+
+            let length = $(".ui-datepicker-calendar tbody tr:first .ui-state-disabled").length;
+            length = (length + oldLength) % 7;
+            oldLength = length;
+            $("#datepicker").datepicker("option", "firstDay", length);
+            $("#datepicker").datepicker("setDate", new Date(2020, month, 1));
+        }
+        formatCalender();
+
+        $(document).on('click', '.ui-datepicker-next', function ()
+        {
+            formatCalender();
         })
 
-        $(document).on('click', '.ui-datepicker-prev', function () {
+        $(document).on('click', '.ui-datepicker-prev', function ()
+        {
+            formatCalender();
         })
     });
 </script>
@@ -106,19 +86,9 @@
 </script>
 
 <style>
-    .ui-datepicker-year {
+    .ui-datepicker-year, .ui-state-disabled, .ui-datepicker-calendar thead,.ui-datepicker.ui-datepicker-inline {
         display: none
     }
-
-    /* This is
-
-   .ui-state-disabled {
-       display:none
-   }
-    .ui-datepicker-calendar thead {
-        display:none
-    }
-    */
     .ui-datepicker.ui-datepicker-inline {
         width: 70%
     }
