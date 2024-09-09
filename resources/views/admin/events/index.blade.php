@@ -18,7 +18,7 @@
             bootbox.confirm({
                 title: 'Add Event',
                 message: html,
-                size: 'large',
+                size: 'medium',
                 buttons: {
                     cancel:
                     {
