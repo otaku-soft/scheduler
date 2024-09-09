@@ -9,13 +9,16 @@
     </div>
     <ul class="nav nav-tabs">
         <li class="nav-item">
-            <a class = "nav-link" :class="{active: navigation.showDateList}"  href="#" v-on:click="changeNavigation('showDateList')">Date List</a>
+            <a class="nav-link" :class="{active: navigation.showDateList}" href="#"
+               v-on:click="changeNavigation('showDateList')">Date List</a>
         </li>
         <li class="nav-item">
-            <a class = "nav-link" :class="{active: navigation.showSpecificDateList}"   href="#" v-on:click="changeNavigation('showSpecificDateList')">Specific Date List</a>
+            <a class="nav-link" :class="{active: navigation.showSpecificDateList}" href="#"
+               v-on:click="changeNavigation('showSpecificDateList')">Specific Date List</a>
         </li>
         <li class="nav-item">
-            <a class = "nav-link" :class="{active: navigation.showPatternList}"   href="#" v-on:click="changeNavigation('showPatternList')">Pattern List</a>
+            <a class="nav-link" :class="{active: navigation.showPatternList}" href="#"
+               v-on:click="changeNavigation('showPatternList')">Pattern List</a>
         </li>
     </ul>
     <div v-show="navigation.showDateList">
@@ -23,8 +26,21 @@
         <div v-if="!dates.length">
             No Dates added
         </div>
-        <div v-for="date in dates">
-            @{{ date }} <a href ="#" v-on:click="deleteDate(date)">Delete</a>
+        <div v-else>
+            <table class="table table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="date in dates">
+                        <td>@{{ date }}</td>
+                        <td><a href="#" v-on:click="deleteDate(date)">Delete</a></td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
         <br/>
         <div id="datepicker" style="width:100%"></div>
@@ -36,8 +52,22 @@
         <div v-if="!specificDates.length">
             No Dates added
         </div>
-        <div v-for="date in specificDates">
-            @{{ date }} <a href ="#" v-on:click="deleteSpecificDate(date)">Delete</a>
+        <div v-else>
+            <table class="table table">
+                <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                <tr v-for="date in specificDates">
+                    <td>@{{ date }}</td>
+                    <td><a href="#" v-on:click="deleteSpecificDate(date)">Delete</a></td>
+                </tr>
+                </tbody>
+            </table>
         </div>
         <br/>
         <div id="datepicker2" style="width:100%"></div>
@@ -48,27 +78,27 @@
         <div v-if="!Object.keys(patterns).length">
             No Patterns added
         </div>
-        <div v-else >
+        <div v-else>
             <table class="table table">
                 <thead>
-                    <tr>
-                        <th>Week Number</th>
-                        <th>Day of Week</th>
-                        <th>Actions</th>
-                    </tr>
+                <tr>
+                    <th>Week Number</th>
+                    <th>Day of Week</th>
+                    <th>Actions</th>
+                </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="(pattern,key) in patterns">
-                        <td>
-                            @{{ pattern.weekNumber }}
-                        </td>
-                        <td>
-                            @{{ pattern.dayOfWeek }}
-                        </td>
-                        <td>
-                           <a href ="#"  v-on:click="deletePattern(key)">Delete</a>
-                        </td>
-                    </tr>
+                <tr v-for="(pattern,key) in patterns">
+                    <td>
+                        @{{ pattern.weekNumber }}
+                    </td>
+                    <td>
+                        @{{ pattern.dayOfWeek }}
+                    </td>
+                    <td>
+                        <a href="#" v-on:click="deletePattern(key)">Delete</a>
+                    </td>
+                </tr>
                 </tbody>
             </table>
 
@@ -143,7 +173,7 @@
 </script>
 
 <script>
-    const {createApp, ref,reactive} = Vue
+    const {createApp, ref, reactive} = Vue
     let dates = ref([]);
     let specificDates = ref([]);
     let navigation = ref({});
@@ -179,7 +209,7 @@
             },
             deleteDate(date)
             {
-                dates.value.splice(date,1);
+                dates.value.splice(date, 1);
             },
             addSpecificDate()
             {
@@ -191,7 +221,7 @@
             },
             deleteSpecificDate(date)
             {
-                specificDates.value.splice(date,1);
+                specificDates.value.splice(date, 1);
             },
             changeNavigation(section)
             {
@@ -202,7 +232,7 @@
             },
             addPattern()
             {
-                let pattern = ref({dayOfWeek: $("#dayOfWeek").val(),weekNumber: $("#weekNumber").val()});
+                let pattern = ref({dayOfWeek: $("#dayOfWeek").val(), weekNumber: $("#weekNumber").val()});
                 patterns.value[$("#dayOfWeek").val() + $("#weekNumber").val()] = pattern;
             },
             deletePattern(key)
@@ -217,6 +247,7 @@
     #datepicker .ui-datepicker-year, #datepicker .ui-state-disabled, #datepicker .ui-datepicker-calendar thead, #datepicker .ui-datepicker.ui-datepicker-inline {
         display: none
     }
+
     .ui-datepicker.ui-datepicker-inline {
         width: 100%
     }
