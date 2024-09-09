@@ -117,10 +117,10 @@
             var months = [
                 "January", "February", "March", "April", "May", "June", "July",
                 "August", "September", "October", "November", "December"];
-            let month = months.indexOf($(".ui-datepicker-month").text()) + 1;
+            let month = months.indexOf($("#datepicker").find(".ui-datepicker-month").text()) + 1;
             month--;
 
-            let length = $(".ui-datepicker-calendar tbody tr:first .ui-state-disabled").length;
+            let length = $("#datepicker").find(".ui-datepicker-calendar tbody tr:first .ui-state-disabled").length;
             length = (length + oldLength) % 7;
             oldLength = length;
             $("#datepicker").datepicker("option", "firstDay", length);
@@ -138,7 +138,7 @@
             formatCalender();
         })
         var dateToday = new Date();
-        //$("#datepicker2").datepicker({minDate: dateToday});
+        $("#datepicker2").datepicker({minDate: dateToday});
     });
 </script>
 
