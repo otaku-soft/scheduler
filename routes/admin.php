@@ -66,5 +66,5 @@ Route::middleware(AuthAdmin::class)->group(function ()
     Route::get($urlEvents->url(""), [EventsController::class, 'index'])->name("events_index");
     Route::post($urlEvents->url("eventList"), [EventsController::class, 'eventList'])->name("events_eventList");
     Route::post($urlEvents->url("addEventModal"), [EventsController::class, 'addEventModal'])->name("events_addEventModal");
-
+    Route::post($urlEvents->url("addEvent"), [EventsController::class, 'addEvent'])->name("events_addEvent");
 });

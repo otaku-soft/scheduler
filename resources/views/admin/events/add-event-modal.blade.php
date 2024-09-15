@@ -1,8 +1,8 @@
 <div id="app">
     <label for="name">Name</label>
-    <input type="text" name="name" class="form-control"/>
+    <input type="text" name="name" class="form-control" v-model="name"/>
     <div class="form-check" style="padding-top:10px;padding-bottom:10px">
-        <input class="form-check-input" type="checkbox" v-model="storeOpen">
+        <input class="form-check-input" type="checkbox" v-model="open">
         <label class="form-check-label" for="flexCheckDefault">
             Open
         </label>
@@ -125,6 +125,7 @@
         <br/>
         <button class="btn btn-primary" v-on:click="addPattern()">Add Date</button>
     </div>
+    <button class="btn btn-primary" v-on:click="save()" id="addEventButton" style="display:none">Save</button>
 </div>
 <script>
     $(function ()
@@ -178,19 +179,21 @@
     let specificDates = ref([]);
     let navigation = ref({});
     let patterns = ref({});
+    let name = ref("");
     navigation.value.showDateList = true;
     navigation.value.showSpecificDateList = false;
     navigation.value.showPatternList = false;
-    let storeOpen = open;
+    let open = false;
     createApp({
         setup()
         {
             return {
+                name,
+                open,
                 dates,
                 specificDates,
                 navigation,
                 patterns,
-                storeOpen
             }
         },
         methods: {
@@ -238,6 +241,15 @@
             deletePattern(key)
             {
                 delete patterns.value[key];
+            },
+            save()
+            {
+                const params = {name: this.name, open: this.open,dates: this.dates,specificDates: this.specificDates,patterns:this.patterns };
+                axios
+                .post('{{ route('events_addEvent') }}',params)
+                .then((response) => {
+                    window.location = "";
+                });
             }
         }
     }).mount('#app')

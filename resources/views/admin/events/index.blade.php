@@ -1,8 +1,35 @@
 <x-app-layout>
     @section('title', 'Events')
-    <div id="eventList"></div>
+    @if (count($events) > 0)
+    <table class="table table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($events as $event)
+                <tr>
+                    <td>
+                        {{ $event->name }}
+                    </td>
+                    <td>
+                        <a href = "#">Edit</a>
+                        <a href = "#">Set Times</a>
+                        <a href = "#">Delete</a>
+                    </td>
+                </tr>
+            @endforeach
+        </tbody>
+    </table>
+        {{ $scopeEvents->links() }}
+    @else
+        No Events
+        <br/><br/>
+    @endif
     <button class="btn btn-primary" onclick="addEvent()">Add Event</button>
-</x-app-layout>
+ </x-app-layout>
 <script>
     const getList = function ()
     {
@@ -31,7 +58,10 @@
                 },
                 callback: function (result)
                 {
-                    return !result;
+                    if (result)
+                    $("#addEventButton").click();
+                    else
+                    window.location = "";
                 }
             });
         });
