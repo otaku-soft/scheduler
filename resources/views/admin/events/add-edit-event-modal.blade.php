@@ -29,16 +29,16 @@
         <div v-else>
             <table class="table table">
                 <thead>
-                    <tr>
-                        <th>Date</th>
-                        <th>Actions</th>
-                    </tr>
+                <tr>
+                    <th>Date</th>
+                    <th>Actions</th>
+                </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="date in dates">
-                        <td>@{{ date }}</td>
-                        <td><a href="#" v-on:click="deleteDate(date)">Delete</a></td>
-                    </tr>
+                <tr v-for="date in dates">
+                    <td>@{{ date }}</td>
+                    <td><a href="#" v-on:click="deleteDate(date)">Delete</a></td>
+                </tr>
                 </tbody>
             </table>
         </div>
@@ -125,7 +125,7 @@
         <br/>
         <button class="btn btn-primary" v-on:click="addPattern()">Add Date</button>
     </div>
-    <button class="btn btn-primary" v-on:click="save()" id="addEventButton" style="display:none">Save</button>
+    <button class="btn btn-primary" v-on:click="save()" id="saveEventButton" style="display:none">Save</button>
 </div>
 <script>
     $(function ()
@@ -245,13 +245,31 @@
             save()
             {
                 const params = {name: this.name, open: this.open,dates: this.dates,specificDates: this.specificDates,patterns:this.patterns };
+                @if (isset($event))
+                params.id = {{ $event->id }};
+                @endif
                 axios
-                .post('{{ route('events_addEvent') }}',params)
+                .post('{{ route($saveRoute) }}',params)
                 .then((response) => {
                     window.location = "";
                 });
             }
-        }
+        },
+        beforeMount() {
+            @if (isset($eventDataRoute))
+            axios
+            .post('{{ route($eventDataRoute) }}',{id:{{ $event->id }}})
+            .then((response) => {
+                const data = response.data;
+                const dates = JSON.parse(data.dates);
+                this.open = data.open ? true: false;
+                this.name = data.name;
+                this.dates = dates.dates;
+                this.specificDates = dates.specificDates;
+                this.patterns = dates.patterns;
+            });
+            @endif
+        },
     }).mount('#app')
 </script>
 

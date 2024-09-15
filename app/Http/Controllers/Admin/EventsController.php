@@ -24,19 +24,39 @@ class EventsController extends Controller
     }
     public function addEventModal() : View
     {
-        return view('admin.events.add-event-modal',["events"]);
+        return view('admin.events.add-edit-event-modal',["saveRoute" => 'events_addEvent']);
     }
     public function addEvent(Request $request): JsonResponse
     {
         $event = new Events();
         $globalEvent = new GlobalEvents();
-        $event->name = $request->get("name");
+        $this->saveEvent($event,$request->get("name"),$request->get("dates"),$request->get("specificDates"),$request->get("patterns"),$request->get("open"));
+        $globalEvent->event_id = $event->id;
+        $globalEvent->save();
+        return new JsonResponse(["success" => true]);
+    }
+    public function editEventModal(Request $request) : View
+    {
+        $event = Events::find($request->get("id"));
+        return view('admin.events.add-edit-event-modal',["eventDataRoute" => "events_eventData","saveRoute" => 'events_editEvent',"event" => $event]);
+    }
+    public function eventData(Request $request): JsonResponse
+    {
+        $event = Events::find($request->get("id"));
+        return new JsonResponse($event->toArray());
+    }
+    public function editEvent(Request $request) : JsonResponse
+    {
+        $event = Events::find($request->get("id"));
+        $this->saveEvent($event,$request->get("name"),$request->get("dates"),$request->get("specificDates"),$request->get("patterns"),$request->get("open"));
+        return new JsonResponse(["success" => true]);
+    }
+    private function saveEvent($event,string $name, ?array $dates,?array $specificDates,?array $patterns, bool $open)
+    {
+        $event->name = $name;
         $event->active = false;
         $json = ["dates" => [],"specificDates" => [],"patterns" => []];
-        $dates = $request->get("dates");
-        $specificDates = $request->get("specificDates");
-        $patterns = $request->get("patterns");
-        $event->open = $request->get("open");
+        $event->open = $open;
         if (!empty($dates))
             foreach ($dates as $date)
             {
@@ -49,20 +69,17 @@ class EventsController extends Controller
             }
 
         if (!empty($patterns))
-            foreach ($patterns as $pattern)
+            foreach ($patterns as $key => $pattern)
             {
                 $addPattern = [];
                 if ($pattern['weekNumber'] >= 1 && $pattern['weekNumber'] <= 5 &&  in_array($pattern['dayOfWeek'],["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"]))
                 {
                     $addPattern['dayOfWeek'] = (string)$pattern['dayOfWeek'];
                     $addPattern['weekNumber'] = (int)$pattern['weekNumber'];
-                    $json['patterns'][] = $addPattern;
+                    $json['patterns'][$key] = $addPattern;
                 }
             }
         $event->dates = json_encode($json);
         $event->save();
-        $globalEvent->event_id = $event->id;
-        $globalEvent->save();
-        return new JsonResponse(["success" => true]);
     }
 }

@@ -64,7 +64,10 @@ Route::middleware(AuthAdmin::class)->group(function ()
     Route::post($urlStoreWeeklyHours->url("deleteTime"), [StoreWeeklyHoursController::class, 'deleteTime'])->name("storeWeeklyHours_deleteTime");
     $urlEvents = new UrlBuilder("/admin/events/");
     Route::get($urlEvents->url(""), [EventsController::class, 'index'])->name("events_index");
-    Route::post($urlEvents->url("eventList"), [EventsController::class, 'eventList'])->name("events_eventList");
     Route::post($urlEvents->url("addEventModal"), [EventsController::class, 'addEventModal'])->name("events_addEventModal");
     Route::post($urlEvents->url("addEvent"), [EventsController::class, 'addEvent'])->name("events_addEvent");
+    Route::post($urlEvents->url("editEventModal"), [EventsController::class, 'editEventModal'])->name("events_editEventModal");
+    Route::post($urlEvents->url("editEvent"), [EventsController::class, 'editEvent'])->name("events_editEvent");
+    Route::post($urlEvents->url("eventData"), [EventsController::class, 'eventData'])->name("events_eventData");
+
 });
